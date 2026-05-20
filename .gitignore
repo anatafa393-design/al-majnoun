@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.vscode/
+.idea/
+.venv/
+venv/
+ENV/
+env/
+
+# System generated/user data
+agent_config.json
+memory.json
+logs/
+workspace/
+skills/*.py
+!skills/__init__.py
+!skills/_registry.json

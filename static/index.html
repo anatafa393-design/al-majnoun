@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المجنون — Self-Evolving AI Agent Dashboard</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Fira+Code:wght@400;600&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="cyber-overlay"></div>
+    <div class="dashboard-container">
+        
+        <!-- Header -->
+        <header class="glass-card main-header">
+            <div class="header-branding">
+                <div class="glow-dot pulsating" id="state-indicator"></div>
+                <h1>نواة المجنون <span class="accent-text">Al-Majnoun Core</span></h1>
+                <span class="version-tag" id="sys-version">v2.0.0</span>
+            </div>
+            <div class="system-stats">
+                <div class="stat-badge">
+                    <span class="label">الحالة:</span>
+                    <span class="value state-idle" id="sys-state">مستعد</span>
+                </div>
+                <div class="stat-badge">
+                    <span class="label">المهارات:</span>
+                    <span class="value" id="skills-count">0</span>
+                </div>
+                <button class="btn btn-secondary" id="btn-reset" title="إعادة ضبط المصنع للوكيل">إعادة تعيين 🔄</button>
+                <button class="btn btn-primary" id="btn-settings-open" title="الإعدادات">⚙️ الإعدادات</button>
+            </div>
+        </header>
+
+        <!-- Workspace Grid -->
+        <div class="workspace-grid">
+            
+            <!-- Left Side: Chat Workspace -->
+            <section class="glass-card chat-panel">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message message-agent">
+                        <div class="msg-avatar">🧠</div>
+                        <div class="msg-bubble">
+                            <p>أهلاً بك! أنا **المجنون**، وكيل ذكاء اصطناعي ذاتي التطور.</p>
+                            <p>أستطيع تنفيذ أي مهمة تطلبها. إذا لم أكن أملك المهارة المطلوبة، سأقوم بكتابة كود بايثون لنفسي وتثبيت المكونات اللازمة لتنفيذها مباشرة!</p>
+                            <p>⚠️ الرجاء التأكد من إدخال مفتاح **Gemini API** من زر الإعدادات بالأعلى للبدء.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input-bar">
+                    <input type="text" id="chat-input" placeholder="اكتب مهمة جديدة للوكيل... (مثال: 'صمم لي كلمة مرور عشوائية')" autocomplete="off">
+                    <button class="btn btn-primary" id="btn-send">إرسال ⚡</button>
+                </div>
+            </section>
+
+            <!-- Right Side: Sidebar Panels -->
+            <div class="sidebar-panels">
+                
+                <!-- Skills Panel -->
+                <section class="glass-card skills-panel">
+                    <div class="panel-header">
+                        <h2>🧰 مكتبة المهارات الذاتية</h2>
+                        <span class="badge" id="skills-badge">0 مهارات</span>
+                    </div>
+                    <p class="panel-desc">هذه المهارات تم برمجتها وتطويرها ذاتياً بواسطة الوكيل لتوسيع قدراته.</p>
+                    <div class="skills-list" id="skills-list">
+                        <div class="no-skills">لا توجد مهارات برمجية بعد. اطلب مهمة جديدة ليبني أول مهارة!</div>
+                    </div>
+                </section>
+
+                <!-- Activity Terminal Log -->
+                <section class="glass-card logs-panel">
+                    <div class="panel-header">
+                        <h2>📊 موجه سجل العمليات الحي</h2>
+                    </div>
+                    <div class="terminal-container">
+                        <div class="terminal-header">
+                            <div class="mac-buttons">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <span class="terminal-title">al_majnoun@evolution_trace</span>
+                        </div>
+                        <div class="terminal-body" id="terminal-logs">
+                            <div class="log-entry system-msg">[SYSTEM] نظام التطور جاهز. في انتظار التوجيهات...</div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settings-modal">
+        <div class="glass-card modal-content">
+            <h2>⚙️ إعدادات الوكيل</h2>
+            <p class="modal-desc">قم بتهيئة مفتاح API الخاص بـ Google Gemini (Free Tier) لتشغيل ذكاء الوكيل.</p>
+            
+            <div class="form-group">
+                <label for="api-key-input">Gemini API Key:</label>
+                <div class="input-password-wrapper">
+                    <input type="password" id="api-key-input" placeholder="AIzaSy...">
+                    <button type="button" id="btn-toggle-api-key" class="btn-toggle-visible">👁️</button>
+                </div>
+                <small>يمكنك الحصول عليه مجاناً من <a href="https://aistudio.google.com/" target="_blank">Google AI Studio</a></small>
+            </div>
+
+            <div class="form-group">
+                <label for="model-select">النموذج اللغوي (LLM Model):</label>
+                <select id="model-select">
+                    <option value="gemini-2.0-flash">Gemini 2.0 Flash (موصى به - سريع ومجاني)</option>
+                    <option value="gemini-1.5-pro">Gemini 1.5 Pro (ذكي جداً - أبطأ)</option>
+                    <option value="gemini-2.0-flash-lite">Gemini 2.0 Flash Lite</option>
+                </select>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="btn-settings-close">إلغاء</button>
+                <button class="btn btn-primary" id="btn-settings-save">حفظ الإعدادات 💾</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Viewer Modal -->
+    <div class="modal-overlay" id="code-modal">
+        <div class="glass-card modal-content code-modal-content">
+            <div class="code-modal-header">
+                <h2 id="code-modal-title">📦 عرض المهارة البرمجية</h2>
+                <button class="btn btn-secondary btn-close-modal" id="btn-code-close">إغلاق ×</button>
+            </div>
+            <p id="code-modal-desc" class="modal-desc"></p>
+            <div class="code-editor-container">
+                <pre><code id="code-modal-body" class="language-python"># جاري تحميل الكود...</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
