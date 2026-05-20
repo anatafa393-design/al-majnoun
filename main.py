@@ -168,11 +168,16 @@ async def websocket_endpoint(ws: WebSocket):
 
 
 # Mount static files
-app.mount("/static", StaticFiles(directory=config.STATIC_DIR), name="static")
+react_dist = os.path.join(config.BASE_DIR, "frontend", "dist")
+if os.path.exists(react_dist):
+    config.STATIC_DIR = react_dist
+    app.mount("/assets", StaticFiles(directory=os.path.join(react_dist, "assets")), name="assets")
+else:
+    app.mount("/static", StaticFiles(directory=config.STATIC_DIR), name="static")
 
 if __name__ == "__main__":
     print("\n" + "="*50)
     print("  المجنون (Al-Majnoun) — Self-Evolving AI Agent")
-    print("  http://127.0.0.1:8000")
+    print("  http://localhost:8000")
     print("="*50 + "\n")
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

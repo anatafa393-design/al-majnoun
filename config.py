@@ -20,8 +20,8 @@ for d in [CORE_DIR, SKILLS_DIR, WORKSPACE_DIR, LOGS_DIR, STATIC_DIR]:
 
 def load_config():
     defaults = {
-        "api_key": "",
-        "model": "gemini-2.0-flash",
+        "api_key": os.environ.get("GEMINI_API_KEY", ""),
+        "model": os.environ.get("GEMINI_MODEL", "gemini-2.0-flash"),
         "api_base": "https://generativelanguage.googleapis.com/v1beta",
         "max_retries": 3,
         "timeout": 60,
@@ -36,6 +36,13 @@ def load_config():
                 defaults.update(saved)
         except:
             pass
+
+    # Prioritize environment variables if they are set
+    if os.environ.get("GEMINI_API_KEY"):
+        defaults["api_key"] = os.environ.get("GEMINI_API_KEY")
+    if os.environ.get("GEMINI_MODEL"):
+        defaults["model"] = os.environ.get("GEMINI_MODEL")
+
     return defaults
 
 def save_config(cfg):
